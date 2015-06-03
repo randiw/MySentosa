@@ -34,15 +34,27 @@ public class Const {
 	public static final String NODE_ID = "node_id";
 	
 	// category types
-	public static final String ATTRACTION = "Attractions", BUS = "Bus",
-			TRAIN = "Sentosa Express", TRAM = "Tram", CARPARK = "Car Park",
-			LOCKER = "Locker", PRAYER_ROOM = "Prayer Room",
-			MOTHERS_ROOM = "Mothers' Room",
-			INFORMATION_COUNTER = "Info Counter",
-			MONEY_CHANGER = "Money Changer", TOILET = "Toilet", TAXI = "Taxi",
-			WIFI = "WiFi", ATM = "ATM", FIRST_AID = "First Aid",
-			SHOPPING = "Shopping", FNB = "Food and Beverages",
-			HOTEL_AND_SPA = "Hotel and Spa";
+	public static final String ATTRACTION = "Attractions";
+	public static final String BUS = "Bus";
+	public static final String TRAIN = "Sentosa Express";
+	public static final String TRAM = "Tram";
+	public static final String CABLE = "Cable";
+	public static final String BUS_INT = "Bus Interchange";
+	public static final String MRT = "Singapore MRT";
+	public static final String CARPARK = "Car Park";
+	public static final String LOCKER = "Locker";
+	public static final String PRAYER_ROOM = "Prayer Room";
+	public static final String MOTHERS_ROOM = "Mothers' Room";
+	public static final String INFORMATION_COUNTER = "Info Counter";
+	public static final String MONEY_CHANGER = "Money Changer";
+	public static final String TOILET = "Toilet";
+	public static final String TAXI = "Taxi";
+	public static final String WIFI = "WiFi";
+	public static final String ATM = "ATM";
+	public static final String FIRST_AID = "First Aid";
+	public static final String SHOPPING = "Shopping";
+	public static final String FNB = "Food and Beverages";
+	public static final String HOTEL_AND_SPA = "Hotel and Spa";
 
 	// Crittercism key
 	public static String CRITTERCISM_KEY;

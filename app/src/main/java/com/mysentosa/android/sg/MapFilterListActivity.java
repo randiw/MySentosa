@@ -35,7 +35,7 @@ public class MapFilterListActivity extends BaseActivity {
     public static final String CURRENT_CATEGORIES_LIST = "CURRENT_CATEGORIES_STRING";
 
     public static final int FILTER_ACTIVITY_REQUEST_CODE = 668;
-    public static int DEFAULT_ITEM = 3;
+    public static int DEFAULT_ITEM = 6;
 
     @InjectView(R.id.header_title) TextView headerTitle;
     @InjectView(R.id.header_search) ImageView headerSearch;
@@ -65,6 +65,9 @@ public class MapFilterListActivity extends BaseActivity {
         defaultCategories.add(Const.BUS);
         defaultCategories.add(Const.TRAIN);
         defaultCategories.add(Const.TRAM);
+        defaultCategories.add(Const.CABLE);
+        defaultCategories.add(Const.BUS_INT);
+        defaultCategories.add(Const.MRT);
     }
 
     private void initializeViews() {
