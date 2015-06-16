@@ -144,6 +144,9 @@ public class MapDataManager implements MapListener {
         categoriesDisplayed.add(Const.BUS);
         categoriesDisplayed.add(Const.TRAM);
         categoriesDisplayed.add(Const.TRAIN);
+        categoriesDisplayed.add(Const.CABLE);
+        categoriesDisplayed.add(Const.BUS_INT);
+        categoriesDisplayed.add(Const.MRT);
 
         //set up the poi markers as required
         float densityFactor = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, mContext.getResources().getDisplayMetrics());

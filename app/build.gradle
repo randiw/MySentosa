@@ -8,8 +8,8 @@ android {
         applicationId "com.mysentosa.android.sg"
         minSdkVersion 11
         targetSdkVersion 19
-        versionCode 37
-        versionName "4.6.8"
+        versionCode 38
+        versionName "4.6.9"
     }
     buildTypes {
         release {
