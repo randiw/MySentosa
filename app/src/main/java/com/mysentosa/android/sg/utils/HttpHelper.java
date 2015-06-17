@@ -44,9 +44,14 @@ public class HttpHelper {
 			BASE_ADDRESSV2 = "http://sentosa-staging.2359media.net/APIv2/";
 			BASE_HOST = "http://sentosa-staging.2359media.net";
 		} else {
-			BASE_ADDRESS = "http://sentosa.2359media.net:8000/api/";
-			BASE_ADDRESSV2 = "http://sentosa.2359media.net:8000/APIv2/";
-			BASE_HOST = "http://sentosa.2359media.net:8000";
+//			BASE_ADDRESS = "http://sentosa.2359media.net:8000/api/";
+//			BASE_ADDRESSV2 = "http://sentosa.2359media.net:8000/APIv2/";
+//			BASE_HOST = "http://sentosa.2359media.net:8000";
+
+			//using staging server for a while
+			BASE_ADDRESS = "http://sentosa-staging.2359media.net/api/";
+			BASE_ADDRESSV2 = "http://sentosa-staging.2359media.net/APIv2/";
+			BASE_HOST = "http://sentosa-staging.2359media.net";
 		}
 	}
 
