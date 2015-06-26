@@ -281,34 +281,20 @@ public class JSONParseUtil {
 
     public static ContentValues getNodeDetailsContentValue(JSONObject data) {
         ContentValues nodesDetail = new ContentValues();
-        nodesDetail.put(NodeDetailsData.ID_COL,
-                data.optInt(NodeDetailsData.ID_JSON));
-        nodesDetail.put(NodeDetailsData.NODE_ID_COL,
-                data.optInt(NodeDetailsData.NODE_ID_JSON));
-        nodesDetail.put(NodeDetailsData.TITLE_COL,
-                data.optString(NodeDetailsData.TITLE_JSON));
-        nodesDetail.put(NodeDetailsData.CATEGORY_COL,
-                data.optString(NodeDetailsData.CATEGORY_JSON));
-        nodesDetail.put(NodeDetailsData.IMAGE_NAME_COL,
-                data.optString(NodeDetailsData.IMAGE_NAME_JSON));
-        nodesDetail.put(NodeDetailsData.VIDEO_URL_COL,
-                data.optString(NodeDetailsData.VIDEO_URL_JSON));
-        nodesDetail.put(NodeDetailsData.DESCRIPTION_COL,
-                data.optString(NodeDetailsData.DESCRIPTION_JSON));
-        nodesDetail.put(NodeDetailsData.ADMISSION_COL,
-                data.optString(NodeDetailsData.ADMISSION_JSON));
-        nodesDetail.put(NodeDetailsData.OTHER_DETAILS_COL,
-                data.optString(NodeDetailsData.OTHER_DETAILS_JSON));
-        nodesDetail.put(NodeDetailsData.SECTION_COL,
-                data.optString(NodeDetailsData.SECTION_JSON).trim());
-        nodesDetail.put(NodeDetailsData.OPENING_TIMES_COL,
-                data.optString(NodeDetailsData.OPENING_TIMES_JSON));
-        nodesDetail.put(NodeDetailsData.CONTACT_NO_COL,
-                data.optString(NodeDetailsData.CONTACT_NO_JSON));
-        nodesDetail.put(NodeDetailsData.EMAIL_COL,
-                data.optString(NodeDetailsData.EMAIL_JSON));
-        nodesDetail.put(NodeDetailsData.WEBSITE_COL,
-                data.optString(NodeDetailsData.WEBSITE_JSON));
+        nodesDetail.put(NodeDetailsData.ID_COL, data.optInt(NodeDetailsData.ID_JSON));
+        nodesDetail.put(NodeDetailsData.NODE_ID_COL, data.optInt(NodeDetailsData.NODE_ID_JSON));
+        nodesDetail.put(NodeDetailsData.TITLE_COL, data.optString(NodeDetailsData.TITLE_JSON));
+        nodesDetail.put(NodeDetailsData.CATEGORY_COL, data.optString(NodeDetailsData.CATEGORY_JSON));
+        nodesDetail.put(NodeDetailsData.IMAGE_NAME_COL, data.optString(NodeDetailsData.IMAGE_NAME_JSON));
+        nodesDetail.put(NodeDetailsData.VIDEO_URL_COL, data.optString(NodeDetailsData.VIDEO_URL_JSON));
+        nodesDetail.put(NodeDetailsData.DESCRIPTION_COL, data.optString(NodeDetailsData.DESCRIPTION_JSON));
+        nodesDetail.put(NodeDetailsData.ADMISSION_COL, data.optString(NodeDetailsData.ADMISSION_JSON));
+        nodesDetail.put(NodeDetailsData.OTHER_DETAILS_COL, data.optString(NodeDetailsData.OTHER_DETAILS_JSON));
+        nodesDetail.put(NodeDetailsData.SECTION_COL, data.optString(NodeDetailsData.SECTION_JSON).trim());
+        nodesDetail.put(NodeDetailsData.OPENING_TIMES_COL, data.optString(NodeDetailsData.OPENING_TIMES_JSON));
+        nodesDetail.put(NodeDetailsData.CONTACT_NO_COL, data.optString(NodeDetailsData.CONTACT_NO_JSON));
+        nodesDetail.put(NodeDetailsData.EMAIL_COL, data.optString(NodeDetailsData.EMAIL_JSON));
+        nodesDetail.put(NodeDetailsData.WEBSITE_COL, data.optString(NodeDetailsData.WEBSITE_JSON));
         return nodesDetail;
     }
 

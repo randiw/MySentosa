@@ -116,12 +116,12 @@ public class Graph  {
 				Node node2 = getNode(edgeCursor.getInt(to_node_col));
 
 				e = new Edge(node1, node2, edgeId, edgeCost, edgeType, false);
-//				Log.d(TAG, "first edge\n" + e.toString());
+				Log.d(TAG, "first edge\n" + e.toString());
 				addEdge(e);
 
 				if(biDirectional) {
 					e = new Edge(node2, node1, edgeId, edgeCost, edgeType, true);
-//					Log.d(TAG, "second edge\n" + e.toString());
+					Log.d(TAG, "second edge\n" + e.toString());
 					addEdge(e);
 				}
 

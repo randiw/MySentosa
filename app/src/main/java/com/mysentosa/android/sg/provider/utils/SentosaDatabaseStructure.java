@@ -318,22 +318,20 @@ public interface SentosaDatabaseStructure {
 		public static final String ATTRACTION_DETAIL_QUERY = "SELECT "
 				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.TITLE_COL + ", "
 				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.ID_COL + ", "
-				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.DESCRIPTION_COL
-				+ ", " + TABLE_NODE_DETAILS + "."
-				+ NodeDetailsData.VIDEO_URL_COL + ", " + TABLE_NODE_DETAILS
-				+ "." + NodeDetailsData.CATEGORY_COL + ", "
-				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.ADMISSION_COL
-				+ ", " + TABLE_NODE_DETAILS + "."
-				+ NodeDetailsData.OTHER_DETAILS_COL + ", " + TABLE_NODE_DETAILS
-				+ "." + NodeDetailsData.SECTION_COL + ", " + TABLE_NODE_DETAILS
-				+ "." + NodeDetailsData.EMAIL_COL + ", " + TABLE_NODE_DETAILS
-				+ "." + NodeDetailsData.WEBSITE_COL + ", " + TABLE_NODE_DETAILS
-				+ "." + NodeDetailsData.IS_BOOKMARKED_COL + ", "
-				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.CONTACT_NO_COL
-				+ ", " + TABLE_NODE_DETAILS + "."
-				+ NodeDetailsData.OPENING_TIMES_COL + " FROM "
-				+ TABLE_NODE_DETAILS + " WHERE " + TABLE_NODE_DETAILS + "."
-				+ NodeDetailsData.NODE_ID_COL + "=?";
+				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.DESCRIPTION_COL + ", "
+				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.VIDEO_URL_COL + ", "
+				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.IMAGE_NAME_COL + ", "
+				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.CATEGORY_COL + ", "
+				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.ADMISSION_COL + ", "
+				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.OTHER_DETAILS_COL + ", "
+				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.SECTION_COL + ", "
+				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.EMAIL_COL + ", "
+				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.WEBSITE_COL + ", "
+				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.IS_BOOKMARKED_COL + ", "
+				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.CONTACT_NO_COL + ", "
+				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.OPENING_TIMES_COL
+				+ " FROM " + TABLE_NODE_DETAILS
+				+ " WHERE " + TABLE_NODE_DETAILS + "." + NodeDetailsData.NODE_ID_COL + "=?";
 		
 		public static final String TITLE_QUERY = "SELECT "
 				+ TABLE_NODE_DETAILS + "." + NodeDetailsData.TITLE_COL + " FROM "
@@ -548,7 +546,8 @@ public interface SentosaDatabaseStructure {
 		public static final String NODE_ID_JSON = "nodeId";
 		public static final String TITLE_JSON = "title";
 		public static final String CATEGORY_JSON = "category";
-		public static final String IMAGE_NAME_JSON = "imageName";
+//		public static final String IMAGE_NAME_JSON = "imageName";
+		public static final String IMAGE_NAME_JSON = "imageNameAndroid";
 		public static final String VIDEO_URL_JSON = "videoUrl";
 		public static final String DESCRIPTION_JSON = "descriptionText";
 		public static final String ADMISSION_JSON = "admission";

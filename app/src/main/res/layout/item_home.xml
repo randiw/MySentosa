@@ -35,7 +35,8 @@
             android:padding="1dp"
             android:text="Suggestion"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tv_home_item_title"

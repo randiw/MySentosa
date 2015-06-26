@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "com.mysentosa.android.sg"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 19
-        versionCode 40
-        versionName "4.6"
+        versionCode 45
+        versionName "4.6.12"
     }
     buildTypes {
         release {
@@ -45,4 +45,5 @@ dependencies {
     compile project(':libGoogleAnalyticsServices_3.01')
     compile project(':osmdroid_sentosa')
     compile 'com.jakewharton:butterknife:6.1.0'
+    compile project(':integration-release')
 }

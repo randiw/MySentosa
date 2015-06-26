@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -136,7 +137,9 @@ public class NodeDetailActivity extends BaseActivity implements LoaderCallbacks<
             }
 
             nodeDetailsID = RepoTools.getInt(c, NodeDetailsData.ID_COL);
-            setImg();
+
+            String imagePath = RepoTools.getString(c, NodeDetailsData.IMAGE_NAME_COL);
+            setImg(imagePath);
 
             currentNodeDetails = new ContentValues();
             DatabaseUtils.cursorRowToContentValues(c, currentNodeDetails);
@@ -150,21 +153,26 @@ public class NodeDetailActivity extends BaseActivity implements LoaderCallbacks<
         logFlurry(FlurryStrings.LocationDetail, false);
     }
 
-    private void setImg() {
+    private void setImg(String imagePath) {
         String imgUrl;
-        if (categoryName.equals(Const.ATTRACTION)
-                || categoryName.equals(Const.FNB)
-                || categoryName.equals(Const.HOTEL_AND_SPA)
-                || categoryName.equals(Const.SHOPPING)
-                || categoryName.equals(Const.BUS)
-                || categoryName.equals(Const.TRAIN)
-                || categoryName.equals(Const.TRAM)) {
-            imgUrl = HttpHelper.BASE_HOST + IMAGE_PATH_SUFFIX + nodeDetailsID + ".jpg";
+        if(imagePath != null && imagePath.length() > 0) {
+            imgUrl = HttpHelper.BASE_HOST + imagePath;
         } else {
-            imgUrl = HttpHelper.BASE_HOST + IMAGE_PATH_SUFFIX + "category_" + categoryName.toLowerCase().replace("'", "").replace(' ', '_').trim() + ".png";
+            if (categoryName.equals(Const.ATTRACTION)
+                    || categoryName.equals(Const.FNB)
+                    || categoryName.equals(Const.HOTEL_AND_SPA)
+                    || categoryName.equals(Const.SHOPPING)
+                    || categoryName.equals(Const.BUS)
+                    || categoryName.equals(Const.TRAIN)
+                    || categoryName.equals(Const.TRAM)) {
+                imgUrl = HttpHelper.BASE_HOST + IMAGE_PATH_SUFFIX + nodeDetailsID + ".jpg";
+            } else {
+                imgUrl = HttpHelper.BASE_HOST + IMAGE_PATH_SUFFIX + "category_" + categoryName.toLowerCase().replace("'", "").replace(' ', '_').trim() + ".png";
+            }
         }
 
         if (SentosaUtils.isValidString(imgUrl)) {
+            Log.d(TAG, "imageUrl: " + imgUrl);
             mImageFetcher.loadImage(imgUrl, imgView, progressBar, R.drawable.stub_large, false, null);
         }
     }

@@ -24,6 +24,8 @@ import com.urbanairship.push.PushPreferences;
 
 import java.util.ArrayList;
 
+import sg.edu.smu.livelabs.integration.LiveLabsApi;
+
 public class SentosaApplication extends Application {
 
     public static final String UNDEFINED_VERSION = "undefined version";
@@ -44,6 +46,7 @@ public class SentosaApplication extends Application {
         appInstance = this;
         mRequestQueue = Volley.newRequestQueue(this);
 
+        setupLiveLabsApi();
         FacebookSdk.sdkInitialize(getApplicationContext());
         DataHelper.init(getApplicationContext());
 
@@ -75,4 +78,13 @@ public class SentosaApplication extends Application {
             application_version = UNDEFINED_VERSION;
         }
     }
+
+    private void setupLiveLabsApi() {
+        if(BuildConfig.DEBUG) {
+            LiveLabsApi.getInstance().initialize(getApplicationContext(), LiveLabsApi.DEV);
+        } else {
+            LiveLabsApi.getInstance().initialize(getApplicationContext(), LiveLabsApi.PROD);
+        }
+    }
+
 }

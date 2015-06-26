@@ -76,6 +76,7 @@ public class HomeActivity extends BaseActivity {
     /////////////////////////////////////////INITIALIZE VIEWS////////////////////////////////////////////////////
     private void initializeViews() {
         headerTitle.setText(R.string.home_title);
+
         headerSearch.setVisibility(View.VISIBLE);
         searchFragment = (SearchFragment) getSupportFragmentManager().findFragmentById(R.id.search_fragment);
 

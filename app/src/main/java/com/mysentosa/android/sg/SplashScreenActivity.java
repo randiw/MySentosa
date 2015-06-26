@@ -40,13 +40,9 @@ public class SplashScreenActivity extends Activity {
 		Crittercism.initialize(getApplicationContext(), Const.CRITTERCISM_KEY);
 
 		mainIntent = this.getIntent();
-//		eventId = this.getIntent().getIntExtra(
-//				EventsAndPromotionsDetailActivity.EVENT_ID, -1);
-		mPrefs = getSharedPreferences(
-				ProfileAndSettingsActivity.USER_DETAILS_PREFS, MODE_PRIVATE);
-		appFirstLaunch = !mPrefs.getBoolean(
-				ProfileAndSettingsActivity.USER_DETAILS_PREFS_ENTRY_CREATED,
-				false);		
+//		eventId = this.getIntent().getIntExtra(EventsAndPromotionsDetailActivity.EVENT_ID, -1);
+		mPrefs = getSharedPreferences(ProfileAndSettingsActivity.USER_DETAILS_PREFS, MODE_PRIVATE);
+		appFirstLaunch = !mPrefs.getBoolean(ProfileAndSettingsActivity.USER_DETAILS_PREFS_ENTRY_CREATED, false);
 
 				
 		// This is to delete the database if the database version has been
@@ -54,8 +50,8 @@ public class SplashScreenActivity extends Activity {
 		SentosaContentProvider.setupDatabase(this);
 
 		// clear all the old images from the cache
-		((SentosaApplication) this.getApplication()).mImageCache
-				.clearExpiredCacheImages();
+		((SentosaApplication) this.getApplication()).mImageCache.clearExpiredCacheImages();
+
 		// ((SentosaApplication)this.getApplication()).mImageCache.clearCaches();
 		// download the events and promotions data
 		if (!SentosaContentProvider.IS_PRELOAD_DATABASE_CREATION) {			
@@ -66,66 +62,37 @@ public class SplashScreenActivity extends Activity {
 		if (appFirstLaunch) {			
 			new GetRegisterTokenAsyncTask(SplashScreenActivity.this).execute();			
 		}
+
 		// new GetTicketEventAsyncTask(this).execute();
 		Handler mSplashHandler = new Handler(new Handler.Callback() {
 			@Override
 			public boolean handleMessage(Message msg) {
 				Intent mIntent;
 				if (appFirstLaunch) {								
-					SharedPreferences mPrefs = getSharedPreferences(
-							ProfileAndSettingsActivity.USER_DETAILS_PREFS,
-							MODE_PRIVATE);
+					SharedPreferences mPrefs = getSharedPreferences(ProfileAndSettingsActivity.USER_DETAILS_PREFS, MODE_PRIVATE);
 					final SharedPreferences.Editor edit = mPrefs.edit();
-					edit.putBoolean(
-							ProfileAndSettingsActivity.USER_DETAILS_PREFS_ENTRY_CREATED,
-							true);
+					edit.putBoolean(ProfileAndSettingsActivity.USER_DETAILS_PREFS_ENTRY_CREATED, true);
 					edit.commit();
-					mIntent = new Intent(SplashScreenActivity.this,
-							ProfileAndSettingsActivity.class);
-					mIntent.putExtra(
-							ProfileAndSettingsActivity.FROM_FIRST_LAUNCH, true);
-//					if (eventId != -1)
-//						mIntent.putExtra(
-//								EventsAndPromotionsDetailActivity.EVENT_ID,
-//								eventId);
-				} else {
-					boolean isRegistered = mPrefs
-							.getBoolean(
-									ProfileAndSettingsActivity.USER_DETAILS_PREFS_IS_REGISTERED,
-									false);
-					if (!isRegistered) {
-						String name = mPrefs
-								.getString(
-										ProfileAndSettingsActivity.USER_DETAILS_PREFS_NAME,
-										null);
-						if (SentosaUtils.isValidString(name)) {
-							String email = mPrefs
-									.getString(
-											ProfileAndSettingsActivity.USER_DETAILS_PREFS_EMAIL,
-											null);
-							String mobile = mPrefs
-									.getString(
-											ProfileAndSettingsActivity.USER_DETAILS_PREFS_MOBILE,
-											null);
-							String gender = mPrefs
-									.getString(
-											ProfileAndSettingsActivity.USER_DETAILS_PREFS_GENDER,
-											null);
+					mIntent = new Intent(SplashScreenActivity.this, ProfileAndSettingsActivity.class);
+					mIntent.putExtra(ProfileAndSettingsActivity.FROM_FIRST_LAUNCH, true);
 
-							String birthDate = mPrefs
-                                    .getString(
-                                            ProfileAndSettingsActivity.USER_DETAILS_PREFS_DOB,
-                                            null); 
-							String postalCode = mPrefs
-									.getString(
-											ProfileAndSettingsActivity.USER_DETAILS_PREFS_POSTAL_CODE,
-											null);
+//					if (eventId != -1)
+//						mIntent.putExtra(EventsAndPromotionsDetailActivity.EVENT_ID, eventId);
+				} else {
+					boolean isRegistered = mPrefs.getBoolean(ProfileAndSettingsActivity.USER_DETAILS_PREFS_IS_REGISTERED, false);
+					if (!isRegistered) {
+						String name = mPrefs.getString(ProfileAndSettingsActivity.USER_DETAILS_PREFS_NAME, null);
+						if (SentosaUtils.isValidString(name)) {
+							String email = mPrefs.getString(ProfileAndSettingsActivity.USER_DETAILS_PREFS_EMAIL, null);
+							String mobile = mPrefs.getString(ProfileAndSettingsActivity.USER_DETAILS_PREFS_MOBILE, null);
+							String gender = mPrefs.getString(ProfileAndSettingsActivity.USER_DETAILS_PREFS_GENDER, null);
+							String birthDate = mPrefs.getString(ProfileAndSettingsActivity.USER_DETAILS_PREFS_DOB, null);
+							String postalCode = mPrefs.getString(ProfileAndSettingsActivity.USER_DETAILS_PREFS_POSTAL_CODE, null);
+
 							if (SentosaUtils.isValidString(birthDate)) {
 							    birthDate = birthDate.replace("/", "-");
 							}
-							ProfileAndSettingsActivity.registerVisitor(
-									SplashScreenActivity.this, name, email,
-									mobile, gender, postalCode, birthDate);
+							ProfileAndSettingsActivity.registerVisitor(SplashScreenActivity.this, name, email, mobile, gender, postalCode, birthDate);
 						}
 					}
 
