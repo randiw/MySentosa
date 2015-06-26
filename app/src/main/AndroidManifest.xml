@@ -286,7 +286,7 @@
         <service
             android:name="com.urbanairship.analytics.EventService"
             android:label="Event Service" />
-
+        <service android:name=".services.GcmIntentService" />
         <!-- This is required for persisting preferences related to push and location -->
 
         <!-- MODIFICATION REQUIRED - Use your package name + ".urbanairship.provider" in the android:authorities -->
@@ -299,7 +299,14 @@
 
         <!-- OPTIONAL, if you want to receive push, push opened and registration completed intents -->
         <receiver android:name="com.mysentosa.android.sg.receiver.IntentReceiver" />
-
+        <receiver
+            android:name=".receiver.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.mysentosa.android.sg" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

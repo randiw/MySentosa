@@ -33,6 +33,8 @@ import com.mysentosa.android.sg.utils.AlertHelper;
 import com.mysentosa.android.sg.utils.HttpHelper;
 import com.mysentosa.android.sg.utils.SentosaUtils;
 
+import sg.edu.smu.livelabs.integration.LiveLabsApi;
+
 
 public class ProfileAndSettingsActivity extends BaseActivity implements OnClickListener {
 
@@ -196,6 +198,8 @@ public class ProfileAndSettingsActivity extends BaseActivity implements OnClickL
 	}
 	
 	public static void registerVisitor(final Activity context,final String name, final String email, final String mobile, final String gender, final String postalCode, final String birthDate) {
+		LiveLabsApi.getInstance().userInfoUpdated(name, gender, email, mobile, birthDate, postalCode);
+
 		SharedPreferences mPrefs = context.getSharedPreferences(USER_DETAILS_PREFS, MODE_PRIVATE);
 		final SharedPreferences.Editor edit = mPrefs.edit();
 		edit.putBoolean(USER_DETAILS_PREFS_IS_REGISTERED, false);

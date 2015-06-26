@@ -3,6 +3,7 @@
 
     <string name="app_name">MySentosa</string>
     <string name="facebook_app_id">308815345874436</string>
+    <string name="sender_id">825822902629</string>
 
     <!-- HomeActivity -->
     <string name="home_title">Highlights</string>
