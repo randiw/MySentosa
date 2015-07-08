@@ -76,7 +76,7 @@ public class ProfileAndSettingsActivity extends BaseActivity implements OnClickL
 		super.onStart();
 		if(fromSplash) {
 			customMenu.getMenu().setVisibility(View.GONE);
-//			showNotificationAlertDialog();
+			showNotificationAlertDialog();
 		} else {
 			findViewById(R.id.btn_skip).setVisibility(View.GONE);
 		}

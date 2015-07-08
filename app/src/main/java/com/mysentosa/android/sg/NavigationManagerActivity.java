@@ -54,53 +54,44 @@ public class NavigationManagerActivity extends FragmentActivity {
 		startBaseActivity(className, intent, true);
 	}
 
-	public void startBaseActivity(String className, Intent intent,
-			boolean isExistingActivity) {		
+	public void startBaseActivity(String className, Intent intent, boolean isExistingActivity) {
 		Intent mIntent = new Intent();
 		mIntent.setClassName(this, className);
-		int eventId = intent.getIntExtra(
-                ACTIVITY_TO_START_ID, -1);
+		int eventId = intent.getIntExtra(ACTIVITY_TO_START_ID, -1);
+
 		if (className.equals(MapActivity.class.getName())) {
 			int nodeId = getIntent().getIntExtra(MapActivity.ROUTE_TO_NODE, -1);
-			String nodeTitle = getIntent().getStringExtra(
-					MapActivity.ROUTE_TO_NODE_TEXT);
-			boolean isWalkOnly = getIntent().getBooleanExtra(
-					MapActivity.IS_WALK_ONLY, true);
+			String nodeTitle = getIntent().getStringExtra(MapActivity.ROUTE_TO_NODE_TEXT);
+			boolean isWalkOnly = getIntent().getBooleanExtra(MapActivity.IS_WALK_ONLY, true);
+
 			if (nodeId != -1 && !isExistingActivity) {
 				mIntent.putExtra(MapActivity.ROUTE_TO_NODE, nodeId);
 				mIntent.putExtra(MapActivity.IS_WALK_ONLY, isWalkOnly);
 				mIntent.putExtra(MapActivity.ROUTE_TO_NODE_TEXT, nodeTitle);
 			}
 		}
+
 		if (className.equals(EventsAndPromotionsActivity.class.getName())) {
 			if (eventId != -1) {
-				mIntent.putExtra(EventsAndPromotionsDetailActivity.ID,
-						eventId);
+				mIntent.putExtra(EventsAndPromotionsDetailActivity.ID,eventId);
 			}
-			int type = intent.getIntExtra(
-					EventsAndPromotionsActivity.CURRENT_TYPE,
-					EventsAndPromotionsActivity.TYPE_EVENT);
+			int type = intent.getIntExtra(EventsAndPromotionsActivity.CURRENT_TYPE,EventsAndPromotionsActivity.TYPE_EVENT);
 			mIntent.putExtra(EventsAndPromotionsActivity.CURRENT_TYPE, type);
 		}
 		if (className.equals(ThingsToDo_MySentosaActivity.class.getName())) {
-			int type = intent.getIntExtra(
-					ThingsToDo_MySentosaActivity.CURRENT_TYPE,
-					ThingsToDo_MySentosaActivity.TYPE_THINGSTODO);
+			int type = intent.getIntExtra(ThingsToDo_MySentosaActivity.CURRENT_TYPE,ThingsToDo_MySentosaActivity.TYPE_THINGSTODO);
 			mIntent.putExtra(ThingsToDo_MySentosaActivity.CURRENT_TYPE, type);
 		}
 		if (className.equals(TicketsActivity.class.getName())) {			
 			mIntent.putExtra(TicketsActivity.TICKET_TYPE, intent.getStringExtra(TicketsActivity.TICKET_TYPE));
 			if (eventId != -1) {
-                mIntent.putExtra(NavigationManagerActivity.ACTIVITY_TO_START_ID,
-                        eventId);
+                mIntent.putExtra(NavigationManagerActivity.ACTIVITY_TO_START_ID,eventId);
             }
 		}
 		if (className.equals(ThingsToDoCategoryListActivity.class.getName())) {          
-		    mIntent.putExtra(ThingsToDoCategoryListActivity.CATEGORY_NAME_FOR_NODES,
-                    intent.getStringExtra(ThingsToDoCategoryListActivity.CATEGORY_NAME_FOR_NODES));
+		    mIntent.putExtra(ThingsToDoCategoryListActivity.CATEGORY_NAME_FOR_NODES,intent.getStringExtra(ThingsToDoCategoryListActivity.CATEGORY_NAME_FOR_NODES));
 		    if (eventId != -1) {
-                mIntent.putExtra(EventsAndPromotionsDetailActivity.ID,
-                        eventId);
+                mIntent.putExtra(EventsAndPromotionsDetailActivity.ID,eventId);
             }
         }
 		
@@ -111,10 +102,6 @@ public class NavigationManagerActivity extends FragmentActivity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-//		if (requestCode == reqCode
-//				&& resultCode == QUIT_NAVIGATION_MANAGER_ACTIVITY) {
-//			this.finish();
-//		}
 		if (STARTED_FROM_NOTIFICATION & isTaskRoot()) {
 		    Intent intent = new Intent(NavigationManagerActivity.this, HomeActivity.class);
 		    startActivity(intent);
@@ -133,14 +120,9 @@ public class NavigationManagerActivity extends FragmentActivity {
 	private class PushNotificationListener extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-
-		    intent.setClass(NavigationManagerActivity.this,
-                  NavigationManagerActivity.class);
+		    intent.setClass(NavigationManagerActivity.this,NavigationManagerActivity.class);
 		    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             NavigationManagerActivity.this.startActivity(intent);
-		    
 		}
-
 	}
-
 }

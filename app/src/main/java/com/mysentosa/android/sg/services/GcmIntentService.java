@@ -9,11 +9,14 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.mysentosa.android.sg.R;
 import com.mysentosa.android.sg.SplashScreenActivity;
 import com.mysentosa.android.sg.receiver.GcmBroadcastReceiver;
+
+import java.util.Map;
 
 import sg.edu.smu.livelabs.integration.LiveLabsApi;
 
@@ -40,28 +43,48 @@ public class GcmIntentService extends IntentService {
         if (!extras.isEmpty()) {  // has effect of unparcelling Bundle
             if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 
-                String message = LiveLabsApi.getInstance().processNotification(extras);
-                if (message != null) {
-                    Intent notifyIntent = new Intent(this, SplashScreenActivity.class);
-                    notifyIntent.putExtra("NOTI_TYPE", "NewLiveLabsPromotion");
-                    notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Map<String, String> map  = LiveLabsApi.getInstance().processNotification(extras);
+                if (map != null) {
+                    String message = map.get("message");
+                    String id = map.get("id");
 
-                    PendingIntent contentIntent = PendingIntent.getActivity(this, 0,notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    if(message != null) {
+                        Intent notifyIntent = new Intent(this, SplashScreenActivity.class);
+                        notifyIntent.putExtra("NOTI_TYPE", "NewLiveLabsPromotion");
+                        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        // Creates an explicit intent for an Activity in your app
+                        Intent resultIntent = new Intent(this, sg.edu.smu.livelabs.integration.PromotionActivity.class);
+                        resultIntent.putExtra("Notification", true);
+                        resultIntent.putExtra("id", id);
 
-                    NotificationCompat.Builder mBuilder =
-                            new NotificationCompat.Builder(this)
-                                    .setSmallIcon(R.mipmap.ic_launcher)
-                                    .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                                    .setContentTitle("Sentosa")
-                                    .setSound(alarmSound)
-                                    .setContentText(message);
+                        // The stack builder object will contain an artificial back stack for the  started Activity.
+                        // This ensures that navigating backward from the Activity leads out of
+                        // your application to the Home screen.
+                        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                        stackBuilder.addParentStack(SplashScreenActivity.class);
+                        stackBuilder.addNextIntent(notifyIntent);
+                        // Adds the Intent that starts the Activity to the top of the stack
+                        stackBuilder.addNextIntent(resultIntent);
 
-                    mBuilder.setContentIntent(contentIntent);
+                        PendingIntent contentIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                    NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+                        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+                        NotificationCompat.Builder mBuilder =
+                                new NotificationCompat.Builder(this)
+                                        .setSmallIcon(R.mipmap.ic_launcher)
+                                        .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                                        .setContentTitle("Sentosa")
+                                        .setSound(alarmSound)
+                                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                                        .setContentText(message);
+
+                        mBuilder.setContentIntent(contentIntent);
+
+                        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                        notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+                    }
                 }
             }
         }
