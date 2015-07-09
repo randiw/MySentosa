@@ -12,9 +12,11 @@ import android.widget.TextView;
 
 import com.mysentosa.android.sg.adapter.ThingsToDoList_Bookmarks_CursorAdapter;
 import com.mysentosa.android.sg.fragments.SearchFragment;
+import com.mysentosa.android.sg.provider.utils.SentosaDatabaseStructure;
 import com.mysentosa.android.sg.provider.utils.SentosaDatabaseStructure.ContentURIs;
 import com.mysentosa.android.sg.provider.utils.SentosaDatabaseStructure.Queries;
 import com.mysentosa.android.sg.utils.Const;
+import com.mysentosa.android.sg.utils.RepoTools;
 import com.mysentosa.android.sg.utils.SentosaUtils;
 
 import butterknife.ButterKnife;
@@ -62,7 +64,8 @@ public class ThingsToDoCategoryListActivity extends BaseActivity {
 
     @OnItemClick(R.id.list)
     public void clickThings(View view, int position) {
-        moveToDetailItem((Integer) view.getTag());
+        int node_id = adapter.getNodeId(position);
+        moveToDetailItem(node_id);
     }
 
     @OnClick(R.id.header_search)

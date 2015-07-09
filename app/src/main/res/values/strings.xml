@@ -18,6 +18,7 @@
     <string name="directions">Directions</string>
     <string name="my_location">My Location</string>
     <string name="my_bookmarks">My Bookmarks</string>
+    <string name="node_id">node_id</string>
 
     <!-- InformationActivity -->
     <string name="information">Information</string>

@@ -50,7 +50,7 @@ public class CustomMenu {
             R.id.menu_tickets,
             R.id.menu_mysentosa,
             R.id.menu_deals,
-            R.id.menu_coupons,
+//            R.id.menu_coupons,
             R.id.menu_islander,
             R.id.menu_information
     };
@@ -62,7 +62,7 @@ public class CustomMenu {
             TicketsActivity.class.getName(),
             ThingsToDo_MySentosaActivity.class.getName(),
             EventsAndPromotionsActivity.class.getName(),
-            PromotionActivity.class.getName(),
+//            PromotionActivity.class.getName(),
             IslanderActivity.class.getName(),
             InformationActivity.class.getName()
     };

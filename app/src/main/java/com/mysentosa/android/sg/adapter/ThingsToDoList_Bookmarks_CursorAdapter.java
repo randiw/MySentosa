@@ -30,10 +30,15 @@ import com.mysentosa.android.sg.provider.utils.SentosaDatabaseStructure.NodeDeta
 import com.mysentosa.android.sg.utils.Const;
 import com.mysentosa.android.sg.utils.HttpHelper;
 import com.mysentosa.android.sg.utils.LogHelper;
+import com.mysentosa.android.sg.utils.RepoTools;
 import com.mysentosa.android.sg.utils.SentosaUtils;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class ThingsToDoList_Bookmarks_CursorAdapter extends CursorAdapter {
+
 	private final LayoutInflater inflater;
 	private int titleCol = -1, nodeIdCol = -1, categoryCol = -1, imgNodeIdCol = -1, latitudeCol = -1, longitudeCol = -1; 
 	private Context context;
@@ -56,43 +61,54 @@ public class ThingsToDoList_Bookmarks_CursorAdapter extends CursorAdapter {
 	}
 
 
-	@Override
-	public void bindView(View v, Context context, Cursor c) {
-		// TODO Auto-generated method stub
-		((TextView) v.findViewById(R.id.tv_description)).setText(c.getString(titleCol));
-		v.setTag(c.getInt(nodeIdCol));
-		String imageUrl = getImgUrl(c.getString(categoryCol),c.getInt(imgNodeIdCol));
-		ImageView ivThumbnail = (ImageView)v.findViewById(R.id.iv_thumbnail);
-		ivThumbnail.setImageResource(R.drawable.stub_thumb);
+    public int getNodeId(int position) {
+        int itemPosition = position - zoneSectionIndexer.getSectionForPosition(position) - 1;
+        Cursor cursor = getCursor();
+        if(cursor.moveToPosition(itemPosition)) {
+            int node_id = RepoTools.getInt(cursor, NodeDetailsData.NODE_ID_COL);
+            return node_id;
+        }
+
+        return 0;
+    }
+
+    @Override
+	public void bindView(View view, Context context, Cursor c) {
+        ViewHolder holder = (ViewHolder) view.getTag();
+
+        String title = RepoTools.getString(c, NodeDetailsData.TITLE_COL);
+        int node_detail_id = RepoTools.getInt(c, NodeDetailsData.ID_COL);
+        String category = RepoTools.getString(c, NodeDetailsData.CATEGORY_COL);
+        String imageUrl = RepoTools.getString(c, NodeDetailsData.IMAGE_NAME_COL);
+        double latitude = RepoTools.getDouble(c, NodeData.LATITUDE_COL);
+        double longitude = RepoTools.getDouble(c, NodeData.LONGITUDE_COL);
+
+        holder.description.setText(title);
+
+        imageUrl = getImageUrl(imageUrl, category, node_detail_id);
 		if(SentosaUtils.isValidString(imageUrl)) {
-			mImageWorker.loadImage(imageUrl, ivThumbnail, null, R.drawable.stub_thumb, true,null);
+			mImageWorker.loadImage(imageUrl, holder.thumbnail, null, R.drawable.stub_thumb, true,null);
 		}
-		LogHelper.d("test","test location 3 ");
+
 		if(currentLocation!=null) {
-			GeoPoint nodeLocation = new GeoPoint(c.getDouble(latitudeCol),c.getDouble(longitudeCol));
+			GeoPoint nodeLocation = new GeoPoint(latitude, longitude);
 			int distance = currentLocation.distanceTo(nodeLocation);
-			LogHelper.d("test","test location 4 lat: "+nodeLocation.getLatitudeE6()+"long: "+nodeLocation.getLongitudeE6()+" distance: "+distance);
 			float distanceInKm = Math.round(distance/100.0)/10.0f;
 			
 			if(distance>=0) {
-				((TextView)v.findViewById(R.id.tv_distance)).setText(distanceInKm+"km away");
+                holder.distance.setText(distanceInKm + "km away");
 			}
 		}
 	}
 
 	@Override
 	public View newView(Context context, Cursor c, ViewGroup vg) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_thingstodo_bookmarks_list, vg, false);
 
-		if(titleCol==-1) {
-			titleCol = c.getColumnIndex(NodeDetailsData.TITLE_COL);
-			nodeIdCol = c.getColumnIndex(NodeDetailsData.NODE_ID_COL);
-			imgNodeIdCol = c.getColumnIndex(NodeDetailsData.ID_COL);
-			categoryCol = c.getColumnIndex(NodeDetailsData.CATEGORY_COL);
-			latitudeCol = c.getColumnIndex(NodeData.LATITUDE_COL);
-			longitudeCol = c.getColumnIndex(NodeData.LONGITUDE_COL);
-		}
-		View v = inflater.inflate(R.layout.item_thingstodo_bookmarks_list, null, false);
-		return v;
+        ViewHolder holder = new ViewHolder(view);
+        view.setTag(holder);
+
+        return view;
 	}
 
 	@Override
@@ -147,25 +163,32 @@ public class ThingsToDoList_Bookmarks_CursorAdapter extends CursorAdapter {
 		zoneSectionIndexer = new ZoneSectionIndexer();
 		super.swapCursor(childCursor);
 	}
-	
-	
-	private String getImgUrl(String categoryName, int nodeDetailsID) {
-		
-		
-		String IMAGE_PATH_SUFFIX = "/Content/Photos/AssetsAttractionAndroid/";
-		String imgUrl;
-		if(categoryName.equals(Const.ATTRACTION) || categoryName.equals(Const.FNB) || categoryName.equals(Const.HOTEL_AND_SPA)
-				|| categoryName.equals(Const.SHOPPING) || categoryName.equals(Const.BUS) || categoryName.equals(Const.TRAIN) 
-				|| categoryName.equals(Const.TRAM)) {
-			imgUrl = HttpHelper.BASE_HOST+IMAGE_PATH_SUFFIX+nodeDetailsID+".jpg";
-	    }
-	    else { 
-	    	imgUrl = HttpHelper.BASE_HOST+IMAGE_PATH_SUFFIX+"category_"+categoryName.toLowerCase().replace("'", "").replace(' ', '_').trim()+".png";
-		}
-    	return imgUrl;
-	}
-	
+
+    private String getImageUrl(String imagePath, String categoryName, int nodeDetailsId) {
+        String imgUrl;
+        if(imagePath != null && imagePath.length() > 0) {
+            imgUrl = HttpHelper.BASE_HOST + imagePath;
+        } else {
+            String IMAGE_PATH_SUFFIX = "/Content/Photos/AssetsAttractionAndroid/";
+
+            if (categoryName.equals(Const.ATTRACTION)
+                    || categoryName.equals(Const.FNB)
+                    || categoryName.equals(Const.HOTEL_AND_SPA)
+                    || categoryName.equals(Const.SHOPPING)
+                    || categoryName.equals(Const.BUS)
+                    || categoryName.equals(Const.TRAIN)
+                    || categoryName.equals(Const.TRAM)) {
+                imgUrl = HttpHelper.BASE_HOST + IMAGE_PATH_SUFFIX + nodeDetailsId + ".jpg";
+            } else {
+                imgUrl = HttpHelper.BASE_HOST + IMAGE_PATH_SUFFIX + "category_" + categoryName.toLowerCase().replace("'", "").replace(' ', '_').trim() + ".png";
+            }
+        }
+
+        return imgUrl;
+    }
+
 	private LocationFinder locationFinder = null;
+
 	private void detectLocation() {
 		locationFinder = new LocationFinder(context,
 				new LocationNotifier() {
@@ -187,8 +210,7 @@ public class ThingsToDoList_Bookmarks_CursorAdapter extends CursorAdapter {
 		}, PlacesConstants.MAX_TIME_TO_GET_LOCATION);
 		locationFinder.requestLocationUpdates();
 	}
-	
-	
+
 	private class ZoneSectionIndexer implements SectionIndexer {
 
 		public Map<Integer,Integer> sectionToPosition;
@@ -234,5 +256,15 @@ public class ThingsToDoList_Bookmarks_CursorAdapter extends CursorAdapter {
 		}
 
 	}
-	
+
+    static class ViewHolder {
+
+        @InjectView(R.id.iv_thumbnail) ImageView thumbnail;
+        @InjectView(R.id.tv_description) TextView description;
+        @InjectView(R.id.tv_distance) TextView distance;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+    }
 }

@@ -171,8 +171,8 @@ public class NodeDetailActivity extends BaseActivity implements LoaderCallbacks<
             }
         }
 
+        Log.d(TAG, "imageUrl: " + imgUrl);
         if (SentosaUtils.isValidString(imgUrl)) {
-            Log.d(TAG, "imageUrl: " + imgUrl);
             mImageFetcher.loadImage(imgUrl, imgView, progressBar, R.drawable.stub_large, false, null);
         }
     }
