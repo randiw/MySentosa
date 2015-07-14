@@ -737,7 +737,7 @@ public class LiveLabsApi {
      * @param activity Your promotion activity. Please don't call this on other activities.
      *  @param savedInstanceState
      */
-    ListView onPromotionActivityCreated(Activity activity, Bundle savedInstanceState) {
+    public ListView onPromotionActivityCreated(Activity activity, Bundle savedInstanceState) {
         if (!initialized) {
             throw new RuntimeException("initialize must be invoked first.");
         }
@@ -751,7 +751,7 @@ public class LiveLabsApi {
      * Help us to coordinate with your promotion activity life cycle. Call this when your promotion activity is resumed.
      * @param activity Your promotion activity. Please don't call this on other activities.
      */
-    void onPromotionActivityResumed(Activity activity) {
+    public void onPromotionActivityResumed(Activity activity) {
         if (!initialized) {
             throw new RuntimeException("initialize must be invoked first.");
         }
@@ -763,7 +763,7 @@ public class LiveLabsApi {
      * Help us to coordinate with your promotion activity life cycle. Call this when your promotion activity is paused.
      * @param activity Your promotion activity. Please don't call this on other activities.
      */
-    void onPromotionActivityPaused(Activity activity) {
+    public void onPromotionActivityPaused(Activity activity) {
         if (!initialized) {
             throw new RuntimeException("initialize must be invoked first.");
         }
@@ -775,7 +775,7 @@ public class LiveLabsApi {
      * Help us to coordinate with your promotion activity life cycle. Call this when your promotion activity is destroyed.
      * @param activity Your promotion activity. Please don't call this on other activities.
      */
-    void onPromtionActivityDestroyed(Activity activity) {
+    public void onPromtionActivityDestroyed(Activity activity) {
         promotionActivity= null;
         promotionActivityPaused = true;
         //sendAppStatusTracking("stop");

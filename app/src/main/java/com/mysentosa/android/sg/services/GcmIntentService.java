@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.mysentosa.android.sg.PromotionsActivity;
 import com.mysentosa.android.sg.R;
 import com.mysentosa.android.sg.SplashScreenActivity;
 import com.mysentosa.android.sg.receiver.GcmBroadcastReceiver;
@@ -54,7 +55,7 @@ public class GcmIntentService extends IntentService {
                         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                         // Creates an explicit intent for an Activity in your app
-                        Intent resultIntent = new Intent(this, sg.edu.smu.livelabs.integration.PromotionActivity.class);
+                        Intent resultIntent = new Intent(this, PromotionsActivity.class);
                         resultIntent.putExtra("Notification", true);
                         resultIntent.putExtra("id", id);
 

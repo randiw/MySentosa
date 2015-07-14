@@ -4,7 +4,7 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:topOffset="420dp"
+    app:topOffset="460dp"
     app:content="@+id/content"
     app:handle="@+id/handle" >
 <!-- change the offset to 460dp if want to include coupons-->
@@ -226,30 +226,30 @@
                 android:textSize="22sp" />
         </LinearLayout>
 
-        <!--<LinearLayout-->
-            <!--android:id="@+id/menu_coupons"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/selector_event_promo_list"-->
-            <!--android:clickable="true"-->
-            <!--android:orientation="horizontal" >-->
+        <LinearLayout
+            android:id="@+id/menu_coupons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_event_promo_list"
+            android:clickable="true"
+            android:orientation="horizontal" >
 
-            <!--<ImageView-->
-                <!--android:layout_width="30dp"-->
-                <!--android:layout_height="30dp"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_margin="9dp"-->
-                <!--android:scaleType="fitXY"-->
-                <!--android:src="@drawable/menu_icons_deals" />-->
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_margin="9dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/menu_icons_deals" />
 
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:text="Coupons"-->
-                <!--android:textColor="#000000"-->
-                <!--android:textSize="22sp" />-->
-        <!--</LinearLayout>-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/coupons"
+                android:textColor="#000000"
+                android:textSize="22sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/menu_islander"

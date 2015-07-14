@@ -82,6 +82,7 @@ public class SplashScreenActivity extends Activity {
                 if (checkPlayServices()) {
                     gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
                     regid = getRegistrationId(getApplicationContext());
+                    Log.d(TAG, "current RegId: " + regid);
 
                     if (regid.isEmpty()) {
                         registerInBackground();

@@ -189,7 +189,11 @@
     
     <!-- Profile and Setting -->
     <string name="profile_fill_required">Please fill in your details before proceeding</string>
-    
+
+
+    <!-- Coupons / PromotionActivity -->
+    <string name="coupons">Coupons</string>
+
     <string name="no_internet_connection_error_message">It seems you are not connected to the internet. Please check your connection and try again.</string>
     <string name="no_internet_connection_error_title">No Internet Connection!</string>
     <string name="no_internet_connection_error_button">OK</string>

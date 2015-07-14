@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -66,7 +67,7 @@ public class PromotionItemAdapter extends ArrayAdapter<Promotion> {
 
 
 
-        Picasso.with(getContext()).load(promotion.getImage().toString()).into(logoView, new com.squareup.picasso.Callback() {
+        Picasso.with(getContext()).load(promotion.getImage().toString()).memoryPolicy(MemoryPolicy.NO_CACHE).into(logoView, new com.squareup.picasso.Callback() {
             @Override
             public void onSuccess() {
                 Drawable drawable = logoView.getDrawable();
@@ -74,9 +75,10 @@ public class PromotionItemAdapter extends ArrayAdapter<Promotion> {
                 double bitmapHeight = drawable.getIntrinsicHeight(); //this is the bitmap's height
 
                 int width = logoView.getMeasuredWidth();
-                int height = (int)Math.ceil(((bitmapHeight/ bitmapWidth) * (double)width));
+                int height = (int) Math.ceil(((bitmapHeight / bitmapWidth) * (double) width));
                 logoView.getLayoutParams().height = height;
             }
+
             @Override
             public void onError() {
 

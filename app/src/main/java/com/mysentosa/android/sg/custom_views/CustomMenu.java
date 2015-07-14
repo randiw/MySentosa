@@ -17,6 +17,7 @@ import com.mysentosa.android.sg.InformationActivity;
 import com.mysentosa.android.sg.IslanderActivity;
 import com.mysentosa.android.sg.MapActivity;
 import com.mysentosa.android.sg.NavigationManagerActivity;
+import com.mysentosa.android.sg.PromotionsActivity;
 import com.mysentosa.android.sg.R;
 import com.mysentosa.android.sg.ThingsToDo_MySentosaActivity;
 import com.mysentosa.android.sg.TicketsActivity;
@@ -50,7 +51,7 @@ public class CustomMenu {
             R.id.menu_tickets,
             R.id.menu_mysentosa,
             R.id.menu_deals,
-//            R.id.menu_coupons,
+            R.id.menu_coupons,
             R.id.menu_islander,
             R.id.menu_information
     };
@@ -62,7 +63,7 @@ public class CustomMenu {
             TicketsActivity.class.getName(),
             ThingsToDo_MySentosaActivity.class.getName(),
             EventsAndPromotionsActivity.class.getName(),
-//            PromotionActivity.class.getName(),
+            PromotionsActivity.class.getName(),
             IslanderActivity.class.getName(),
             InformationActivity.class.getName()
     };
@@ -159,6 +160,10 @@ public class CustomMenu {
                                     .createAppView()
                                     .build()
                     );
+                }
+
+                if(className.equals(PromotionsActivity.class.getName())) {
+                    intent.putExtra("Notification", false);
                 }
 
                 currentActivity.startActivity(intent);

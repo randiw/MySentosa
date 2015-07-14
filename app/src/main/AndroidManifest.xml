@@ -186,6 +186,9 @@
         <activity
             android:name="com.mysentosa.android.sg.IslanderDealsActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.mysentosa.android.sg.PromotionsActivity"
+            android:screenOrientation="portrait" />
         <!--<activity-->
         <!--android:name="com.google.zxing.client.android.camera.CaptureActivity"-->
         <!--android:screenOrientation="portrait" />-->
