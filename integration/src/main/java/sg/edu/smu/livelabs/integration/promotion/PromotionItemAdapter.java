@@ -1,7 +1,9 @@
 package sg.edu.smu.livelabs.integration.promotion;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.List;
 
 import sg.edu.smu.livelabs.integration.model.Promotion;
@@ -53,20 +56,37 @@ public class PromotionItemAdapter extends ArrayAdapter<Promotion> {
         Typeface tfSemiBold = Typeface.createFromAsset(getContext().getAssets(), "font/MyriadPro-Semibold.otf");
         Typeface tfRegular = Typeface.createFromAsset(getContext().getAssets(), "font/MyriadPro-Regular.otf");
 
-        ImageView logoView = (ImageView) convertView.findViewById(R.id.logo_view);
+        final ImageView logoView = (ImageView) convertView.findViewById(R.id.logo_view);
         TextView titleView = (TextView) convertView.findViewById(R.id.title_txt);
         //TextView detailsVIew = (TextView) convertView.findViewById(R.id.details_txt);
 
         titleView.setTypeface(tfSemiBold);
         //detailsVIew.setTypeface(tfRegular);
-
-
-
         Promotion promotion = getItem(position);
 
-        Picasso.with(getContext()).load(promotion.getImage().toString()).into(logoView);
+
+
+        Picasso.with(getContext()).load(promotion.getImage().toString()).into(logoView, new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+                Drawable drawable = logoView.getDrawable();
+                double bitmapWidth = drawable.getIntrinsicWidth(); //this is the bitmap's width
+                double bitmapHeight = drawable.getIntrinsicHeight(); //this is the bitmap's height
+
+                int width = logoView.getMeasuredWidth();
+                int height = (int)Math.ceil(((bitmapHeight/ bitmapWidth) * (double)width));
+                logoView.getLayoutParams().height = height;
+            }
+            @Override
+            public void onError() {
+
+            }
+        });
+
+
         titleView.setText(promotion.getTitle());
         //detailsVIew.setText(promotion.getTitle());
         return convertView;
     }
+
 }

@@ -68,19 +68,19 @@ public class PromotionActivity extends FragmentActivity {
             haveNetworkFault = true;
         }
 
-        if(haveNetworkFault){
-            new AlertDialog.Builder(PromotionActivity.this)
-                    .setTitle("Wifi")
-                    .setMessage("Cannot connect to network. Please check your WIFI connection.")
-                    .setPositiveButton("OK",  new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            finish();
-                            //finishActivity(100);
-                        }
-                    })
-                    .show();
-            return;
-        }
+//        if(haveNetworkFault){
+//            new AlertDialog.Builder(PromotionActivity.this)
+//                    .setTitle("Wifi")
+//                    .setMessage("Cannot connect to network. Please check your WIFI connection.")
+//                    .setPositiveButton("OK",  new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                            finish();
+//                            //finishActivity(100);
+//                        }
+//                    })
+//                    .show();
+//            return;
+//        }
 
         LiveLabsApi.getInstance().onPromotionActivityCreated(this, savedInstanceState);
 

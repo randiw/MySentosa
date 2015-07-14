@@ -28,6 +28,7 @@ import java.util.HashMap;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import sg.edu.smu.livelabs.integration.LiveLabsApi;
 
 public class HomeActivity extends BaseActivity {
 
@@ -46,6 +47,8 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LiveLabsApi.getInstance().onMainActivityCreated(this, savedInstanceState);
+
         setContentView(R.layout.home_screen);
         ButterKnife.inject(this);
 
@@ -63,8 +66,22 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
+        LiveLabsApi.getInstance().onMainActivityResumed(this);
+
         currentWeather.updateCurrentWeatherValues(); //this checks if current weather is updated and if not downloads value and sets the view
         new GetAnnouncementsAsyncTask(this).execute();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LiveLabsApi.getInstance().onMainActivityPaused(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LiveLabsApi.getInstance().onMainActivityDestroyed(this);
     }
 
     @Override

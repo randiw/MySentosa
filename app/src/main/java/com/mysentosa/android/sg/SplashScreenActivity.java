@@ -46,7 +46,6 @@ public class SplashScreenActivity extends Activity {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LiveLabsApi.getInstance().onMainActivityCreated(this, savedInstanceState);
 
         ImageView iv = new ImageView(this);
         iv.setImageResource(R.drawable.splash);
@@ -152,24 +151,6 @@ public class SplashScreenActivity extends Activity {
             }
         });
         mSplashHandler.sendEmptyMessageDelayed(0, SPLASH_TIMEOUT);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LiveLabsApi.getInstance().onMainActivityResumed(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        LiveLabsApi.getInstance().onMainActivityPaused(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        LiveLabsApi.getInstance().onMainActivityDestroyed(this);
     }
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
