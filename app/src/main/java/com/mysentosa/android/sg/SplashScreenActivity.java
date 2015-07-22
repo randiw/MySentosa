@@ -76,6 +76,16 @@ public class SplashScreenActivity extends Activity {
             new GetRegisterTokenAsyncTask(SplashScreenActivity.this).execute();
         }
 
+        final SharedPreferences.Editor edit = mPrefs.edit();
+
+        String storedVersion = mPrefs.getString("CUR_VERSION", null);
+        String currentVersion = getAppVersionString(getApplicationContext());
+        if(!currentVersion.equals(storedVersion)) {
+            LiveLabsApi.getInstance().appInstalled(storedVersion, currentVersion);
+            edit.putString("CUR_VERSION", currentVersion);
+            edit.commit();
+        }
+
         Handler mSplashHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -90,14 +100,8 @@ public class SplashScreenActivity extends Activity {
                 }
 
                 Intent mIntent;
+                Log.d(TAG, "appFirstLaunch: " + appFirstLaunch);
                 if (appFirstLaunch) {
-                    final SharedPreferences.Editor edit = mPrefs.edit();
-
-                    String storedVersion = mPrefs.getString("CUR_VERSION", null);
-                    String currentVersion = getAppVersionString(getApplicationContext());
-                    LiveLabsApi.getInstance().appInstalled(storedVersion, currentVersion);
-                    edit.putString("CUR_VERSION", currentVersion);
-
                     edit.putBoolean(ProfileAndSettingsActivity.USER_DETAILS_PREFS_ENTRY_CREATED, true);
                     edit.commit();
 

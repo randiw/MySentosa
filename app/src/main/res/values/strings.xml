@@ -42,8 +42,10 @@
 
     <!-- Notification Alert -->
     <string name="notification_alert_title">\"MySentosa\" Would Like to Send You Push Notifications</string>
-    <string name="notification_alert_detail">Notifications may include alerts, sounds and icon badges. The content may include targeted marketing message or deals, as well as general announcement. These can be configured or disabled in Settings.</string>
-    
+    <string name="notification_alert_detail">Notifications may include alerts, sounds and icon badges. The content may include targeted marketing message or deals, as well as general announcement. These can be configured or disabled in Settings.\n\nClick here to view the Mobile App Data Protection Policy.</string>
+    <string name="here">here</string>
+    <string name="protection_policy_url">http://www.sentosa.com.sg/en/mobileapp-data-protection-policy/</string>
+
     <!-- facebook share messages -->
     <string name="facebook_check_server_error">Error logging into facebook. Please check if network is available.</string>
     <string name="facebook_oauth_error">Error accessing your facebook account. Please login to your account and post again.</string>

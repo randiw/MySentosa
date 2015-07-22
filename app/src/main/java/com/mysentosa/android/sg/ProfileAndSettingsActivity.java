@@ -11,13 +11,23 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
+import android.text.style.UnderlineSpan;
+import android.text.util.Linkify;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
@@ -33,10 +43,13 @@ import com.mysentosa.android.sg.utils.AlertHelper;
 import com.mysentosa.android.sg.utils.HttpHelper;
 import com.mysentosa.android.sg.utils.SentosaUtils;
 
+import butterknife.ButterKnife;
 import sg.edu.smu.livelabs.integration.LiveLabsApi;
 
 
 public class ProfileAndSettingsActivity extends BaseActivity implements OnClickListener {
+
+    public static final String TAG = ProfileAndSettingsActivity.class.getSimpleName();
 
 	public static final String USER_DETAILS_PREFS = "com.mysentosa.android.sg.user.prefs";
 	public static final String USER_DETAILS_PREFS_ENTRY_CREATED = "ENTRY_CREATED";
@@ -66,6 +79,8 @@ public class ProfileAndSettingsActivity extends BaseActivity implements OnClickL
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.user_details_screen);
 		fromSplash = this.getIntent().getBooleanExtra(FROM_FIRST_LAUNCH, false);
+        Log.d(TAG, "fromSplash: " + fromSplash);
+
 		eventId = this.getIntent().getIntExtra(EventsAndPromotionsDetailActivity.ID, -1);
 		initializeViews();
 		setContent();
@@ -76,7 +91,7 @@ public class ProfileAndSettingsActivity extends BaseActivity implements OnClickL
 		super.onStart();
 		if(fromSplash) {
 			customMenu.getMenu().setVisibility(View.GONE);
-//			showNotificationAlertDialog();
+			showNotificationAlertDialog();
 		} else {
 			findViewById(R.id.btn_skip).setVisibility(View.GONE);
 		}
@@ -269,12 +284,41 @@ public class ProfileAndSettingsActivity extends BaseActivity implements OnClickL
 	}
 	
     private void showNotificationAlertDialog() {
-        AlertHelper.showNotificationAlert(this, new DialogInterface.OnClickListener() {
+        String content = getString(R.string.notification_alert_detail);
+        String here = getString(R.string.here);
+
+        SpannableString spannableString = new SpannableString(content);
+        int indexOfSearchQuery = indexOfSearchQuery(content, here);
+        if(indexOfSearchQuery > -1) {
+            ClickableSpan clickableSpan = new ClickableSpan() {
+                @Override
+                public void onClick(View widget) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.protection_policy_url)));
+                    startActivity(browserIntent);
+                }
+            };
+            spannableString.setSpan(clickableSpan, indexOfSearchQuery, indexOfSearchQuery + here.length(), 0);
+
+            UnderlineSpan underlinedSpan = new UnderlineSpan();
+            spannableString.setSpan(underlinedSpan, indexOfSearchQuery, indexOfSearchQuery + here.length(), 0);
+        }
+
+        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_text, null);
+        TextView textView = ButterKnife.findById(view, R.id.text);
+        textView.setText(spannableString);
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        AlertDialog alertDialog = new AlertDialog.Builder(ProfileAndSettingsActivity.this).create();
+        alertDialog.setTitle(getString(R.string.notification_alert_title));
+        alertDialog.setView(view);
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
+
+        alertDialog.show();
     }
     
     private OnDateSetListener dateSetListener = new OnDateSetListener() {
@@ -358,5 +402,12 @@ public class ProfileAndSettingsActivity extends BaseActivity implements OnClickL
             etPostalCode.setError(null);
         }
         return result;
+    }
+
+    private int indexOfSearchQuery(String content, String contains) {
+        if (!TextUtils.isEmpty(contains)) {
+            return content.toLowerCase(Locale.getDefault()).indexOf(contains.toLowerCase(Locale.getDefault()));
+        }
+        return -1;
     }
 }
