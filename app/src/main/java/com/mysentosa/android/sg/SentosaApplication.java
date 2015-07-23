@@ -81,7 +81,8 @@ public class SentosaApplication extends Application {
 
     private void setupLiveLabsApi() {
         if(BuildConfig.DEBUG) {
-            LiveLabsApi.getInstance().initialize(getApplicationContext(), LiveLabsApi.DEV);
+//            LiveLabsApi.getInstance().initialize(getApplicationContext(), LiveLabsApi.DEV);
+            LiveLabsApi.getInstance().initialize(getApplicationContext(), LiveLabsApi.PROD);
         } else {
             LiveLabsApi.getInstance().initialize(getApplicationContext(), LiveLabsApi.PROD);
         }

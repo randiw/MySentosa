@@ -35,9 +35,11 @@ public class PromotionsActivity extends BaseActivity {
 
     @InjectView(R.id.header_title) TextView headerTitle;
     @InjectView(R.id.list) ListView listView;
+    @InjectView(R.id.no_promotion) TextView noPromotion;
 
     private PromotionItemAdapter promotionItemAdapter;
     private boolean haveNetworkFault;
+    private int campaignId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,12 +91,14 @@ public class PromotionsActivity extends BaseActivity {
         //This stuff is to test the promotion feature
         promotionItemAdapter = new PromotionItemAdapter(this);
         listView.setAdapter(promotionItemAdapter);
+        listView.setEmptyView(noPromotion);
         refreshPromotions();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Promotion p = promotionItemAdapter.getItem(position);
+                campaignId = p.getCampaignId();
 
                 LiveLabsApi.getInstance().promotionTracking(Integer.toString(p.getId()), Integer.toString(p.getCampaignId()));
 
@@ -148,6 +152,19 @@ public class PromotionsActivity extends BaseActivity {
             if(result.getContents() == null) {
                 // Log.d("MainActivity", "Cancelled scan");
                 // Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else if(!Integer.toString(campaignId).equals(result.getContents())) {
+                new AlertDialog.Builder(PromotionsActivity.this)
+                        .setTitle("Redeem")
+                        .setMessage("Opps, this is not the correct QR code for this coupon. Please check with the counter.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //System.out.println("refresh");
+                                //finish();
+                                //startActivity(getIntent());
+                            }
+                        })
+                        .show();
+
             } else {
                 //Log.d("MainActivity", "Scanned");
                 //Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();

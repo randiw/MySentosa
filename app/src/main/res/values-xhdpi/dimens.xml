@@ -34,7 +34,7 @@
     <dimen name="islander_star_size">25dp</dimen>
     <dimen name="islander_star_smaller_size">20dp</dimen>
     
-    <dimen name="deal_top_tab_width">130dp</dimen>
+    <dimen name="deal_top_tab_width">100dp</dimen>
     <dimen name="deal_top_tab_height">36dp</dimen>
     
     <dimen name="deal_claimed_badge_size">50dp</dimen>

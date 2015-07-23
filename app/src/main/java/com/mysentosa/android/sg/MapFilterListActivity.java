@@ -68,6 +68,7 @@ public class MapFilterListActivity extends BaseActivity {
         defaultCategories.add(Const.CABLE);
         defaultCategories.add(Const.BUS_INT);
         defaultCategories.add(Const.MRT);
+        defaultCategories.add(Const.CABLEWAY);
     }
 
     private void initializeViews() {

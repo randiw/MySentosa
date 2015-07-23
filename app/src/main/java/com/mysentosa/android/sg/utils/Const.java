@@ -41,6 +41,7 @@ public class Const {
 	public static final String CABLE = "Cable";
 	public static final String BUS_INT = "Bus Interchange";
 	public static final String MRT = "Singapore MRT";
+	public static final String CABLEWAY = "Cableway";
 	public static final String CARPARK = "Car Park";
 	public static final String LOCKER = "Locker";
 	public static final String PRAYER_ROOM = "Prayer Room";

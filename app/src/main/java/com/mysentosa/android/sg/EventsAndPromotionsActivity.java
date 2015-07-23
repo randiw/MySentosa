@@ -30,7 +30,7 @@ import com.mysentosa.android.sg.provider.utils.SentosaDatabaseStructure.ContentU
 import com.mysentosa.android.sg.provider.utils.SentosaDatabaseStructure.EventsPromotionsBase;
 import com.mysentosa.android.sg.provider.utils.SentosaDatabaseStructure.Queries;
 import com.mysentosa.android.sg.request.GetMyClaimedDealsRequest;
-import com.mysentosa.android.sg.request.GetPromotionExclusiveRequest;
+import com.mysentosa.android.sg.request.GetPromotionRequest;
 import com.mysentosa.android.sg.utils.Const.FlurryStrings;
 import com.mysentosa.android.sg.utils.SentosaUtils;
 
@@ -47,19 +47,28 @@ public class EventsAndPromotionsActivity extends BaseActivity implements LoaderC
 
     public static final String CURRENT_TYPE = "CURRENT_TYPE";
     public static final int TYPE_EVENT = 0, TYPE_PROMOTION = 1;
+
+    public static final int TAB_GENERAL = 0;
+    public static final int TAB_MASTERCARD = 1;
+    public static final int TAB_ISLANDER = 2;
+
     private int currentType = TYPE_EVENT;
+    private int currentTab;
+    private int currentPage = 1;
 
     private EventAndPromotionListCursorAdapter eventPromotionsCursorAdapter;
     private PromotionExclusiveAdapter exclusiveAdapter;
+    private PromotionExclusiveAdapter mastercardAdapter;
+
     private ArrayList<Promotion> listIslanderEx;
-    private boolean ischoosingGeneral = true;
-    private int currentPage = 1;
+    private ArrayList<Promotion> listMastercard;
     private ArrayList<Promotion> claimedListPromotion;
 
-    private LoginDialog loginDialog;
     private boolean isLoadedIslanderEx = false;
+    private boolean isLoadedMastercard = false;
 
     private Promotion pickedPromotion = null;
+    private LoginDialog loginDialog;
     private SearchFragment searchFragment;
 
     @InjectView(R.id.header_title) TextView headerTitle;
@@ -68,6 +77,7 @@ public class EventsAndPromotionsActivity extends BaseActivity implements LoaderC
     @InjectView(R.id.topbar) LinearLayout tabBar;
     @InjectView(R.id.list) ListView list;
     @InjectView(R.id.general) ImageView generalTab;
+    @InjectView(R.id.mastercard) ImageView mastercardTab;
     @InjectView(R.id.islander_exclusive) ImageView islanderTab;
     @InjectView(R.id.pb_loading) ProgressBar progressBar;
 
@@ -95,12 +105,13 @@ public class EventsAndPromotionsActivity extends BaseActivity implements LoaderC
             this.startActivity(mIntent);
         }
 
-        setContentView(R.layout.events_promo_list_screen);
+        setContentView(R.layout.activity_events_and_promotions);
         ButterKnife.inject(this);
 
         initializeViews();
 
         listIslanderEx = new ArrayList<Promotion>();
+        listMastercard = new ArrayList<Promotion>();
         claimedListPromotion = new ArrayList<Promotion>();
         new GetEventsPromotionsAsyncTask(this).execute();
 
@@ -153,32 +164,43 @@ public class EventsAndPromotionsActivity extends BaseActivity implements LoaderC
 
     @OnItemClick(R.id.list)
     public void clickDeals(View view, int position) {
-        Intent intent = new Intent();
-        if (ischoosingGeneral) {
-            intent.setClass(this, EventsAndPromotionsDetailActivity.class);
-            intent.putExtra(EventsPromotionsBase.ID_COL, ((ViewHolder) view.getTag()).id);
-            if (isEvent()) {
-                FlurryAgent.logEvent(FlurryStrings.EventDetailsEvents);
-                intent.putExtra(EventsAndPromotionsDetailActivity.CURRENT_TYPE,
-                        EventsAndPromotionsDetailActivity.TYPE_EVENT);
-            } else {
+        Intent intent = new Intent(this, EventsAndPromotionsDetailActivity.class);
+
+        switch (currentTab) {
+            case TAB_GENERAL:
+                intent.putExtra(EventsPromotionsBase.ID_COL, ((ViewHolder) view.getTag()).id);
+                if (isEvent()) {
+                    FlurryAgent.logEvent(FlurryStrings.EventDetailsEvents);
+                    intent.putExtra(EventsAndPromotionsDetailActivity.CURRENT_TYPE, EventsAndPromotionsDetailActivity.TYPE_EVENT);
+                } else {
+                    FlurryAgent.logEvent(FlurryStrings.PromotionsDetailsPromotions);
+                    intent.putExtra(EventsAndPromotionsDetailActivity.CURRENT_TYPE, EventsAndPromotionsDetailActivity.TYPE_PROMOTION);
+                }
+                startActivity(intent);
+                break;
+
+            case TAB_MASTERCARD:
                 FlurryAgent.logEvent(FlurryStrings.PromotionsDetailsPromotions);
-                intent.putExtra(EventsAndPromotionsDetailActivity.CURRENT_TYPE,
-                        EventsAndPromotionsDetailActivity.TYPE_PROMOTION);
-            }
-            startActivity(intent);
-        } else {
-            if (SentosaUtils.isUserLogined(EventsAndPromotionsActivity.this)) {
-                pickIslanderEx(listIslanderEx.get(position));
-            } else {
-                // show Login/Register Dialog
-                pickedPromotion = listIslanderEx.get(position);
-                loginDialog.show();
-            }
+                Promotion promotion = listMastercard.get(position);
+                intent.putExtra(EventsPromotionsBase.ID_COL, promotion.getId());
+                intent.putExtra(EventsAndPromotionsDetailActivity.CURRENT_TYPE, EventsAndPromotionsDetailActivity.TYPE_PROMOTION);
+                intent.putExtra(EventsAndPromotionsDetailActivity.ISLANDER_CLAIMED_DEAL, new Gson().toJson(promotion));
+                startActivity(intent);
+                break;
+
+            case TAB_ISLANDER:
+                if (SentosaUtils.isUserLogined(EventsAndPromotionsActivity.this)) {
+                    pickIslanderEx(listIslanderEx.get(position));
+                } else {
+                    // show Login/Register Dialog
+                    pickedPromotion = listIslanderEx.get(position);
+                    loginDialog.show();
+                }
+                break;
         }
     }
 
-    @OnClick({R.id.general, R.id.islander_exclusive})
+    @OnClick({R.id.general, R.id.islander_exclusive, R.id.mastercard})
     public void clickTab(View view) {
         switch (view.getId()) {
             case R.id.general:
@@ -192,6 +214,15 @@ public class EventsAndPromotionsActivity extends BaseActivity implements LoaderC
                 } else {
                     changeStatusButton(R.id.islander_exclusive);
                     list.setAdapter(exclusiveAdapter);
+                }
+                break;
+
+            case R.id.mastercard:
+                if(!isLoadedMastercard) {
+                    getMastercard();
+                } else {
+                    changeStatusButton(R.id.mastercard);
+                    list.setAdapter(mastercardAdapter);
                 }
                 break;
         }
@@ -227,15 +258,24 @@ public class EventsAndPromotionsActivity extends BaseActivity implements LoaderC
     private void changeStatusButton(int chosenImageViewID) {
         switch (chosenImageViewID) {
             case R.id.general:
+                currentTab = TAB_GENERAL;
                 generalTab.setImageResource(R.drawable.tab_general_left_orange);
+                mastercardTab.setImageResource(R.drawable.tab_mastercard_middle_grey);
                 islanderTab.setImageResource(R.drawable.tab_islander_right_grey);
-                ischoosingGeneral = true;
                 break;
 
             case R.id.islander_exclusive:
+                currentTab = TAB_ISLANDER;
                 generalTab.setImageResource(R.drawable.tab_general_left_grey);
+                mastercardTab.setImageResource(R.drawable.tab_mastercard_middle_grey);
                 islanderTab.setImageResource(R.drawable.tab_islander_right_orange);
-                ischoosingGeneral = false;
+                break;
+
+            case R.id.mastercard:
+                currentTab = TAB_MASTERCARD;
+                generalTab.setImageResource(R.drawable.tab_general_left_grey);
+                mastercardTab.setImageResource(R.drawable.tab_mastercard_middle_orange);
+                islanderTab.setImageResource(R.drawable.tab_islander_right_grey);
                 break;
 
             default:
@@ -245,26 +285,44 @@ public class EventsAndPromotionsActivity extends BaseActivity implements LoaderC
 
     private void getPromotionEx() {
         mPBLoading.show();
-        GetPromotionExclusiveRequest request = new GetPromotionExclusiveRequest(this, mResponseListener, mErrorListener);
+        GetPromotionRequest request = new GetPromotionRequest(GetPromotionRequest.URL_PROMOTION_EXCLUSIVE, new Listener<ArrayList<Promotion>>() {
+            @Override
+            public void onResponse(ArrayList<Promotion> response) {
+                if (response != null) {
+                    isLoadedIslanderEx = true;
+                    listIslanderEx = response;
+                    exclusiveAdapter = new PromotionExclusiveAdapter(EventsAndPromotionsActivity.this, listIslanderEx);
+                    list.setAdapter(exclusiveAdapter);
+                } else {
+                    list.setAdapter(null);
+                }
+
+                changeStatusButton(R.id.islander_exclusive);
+                dismissProgressDialog();
+            }
+        }, mErrorListener);
         SentosaApplication.mRequestQueue.add(request);
     }
 
-    Listener<ArrayList<Promotion>> mResponseListener = new Listener<ArrayList<Promotion>>() {
-        @Override
-        public void onResponse(ArrayList<Promotion> listResult) {
-            if (listResult != null) {
-                isLoadedIslanderEx = true;
-                listIslanderEx = listResult;
-                exclusiveAdapter = new PromotionExclusiveAdapter(EventsAndPromotionsActivity.this, listIslanderEx);
-                list.setAdapter(exclusiveAdapter);
-            } else {
-                list.setAdapter(null);
+    private void getMastercard() {
+        mPBLoading.show();
+        GetPromotionRequest request = new GetPromotionRequest(GetPromotionRequest.URL_PROMOTION_MASTERCARD, new Listener<ArrayList<Promotion>>() {
+            @Override
+            public void onResponse(ArrayList<Promotion> response) {
+                if(response != null) {
+                    isLoadedMastercard = true;
+                    listMastercard = response;
+                    mastercardAdapter = new PromotionExclusiveAdapter(EventsAndPromotionsActivity.this, listMastercard);
+                    list.setAdapter(mastercardAdapter);
+                } else {
+                    list.setAdapter(null);
+                }
+                changeStatusButton(R.id.mastercard);
+                dismissProgressDialog();
             }
-
-            changeStatusButton(R.id.islander_exclusive);
-            dismissProgressDialog();
-        }
-    };
+        }, mErrorListener);
+        SentosaApplication.mRequestQueue.add(request);
+    }
 
     private void getClaimedDeals() {
         mPBLoading.show();

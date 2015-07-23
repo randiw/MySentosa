@@ -195,6 +195,7 @@
 
     <!-- Coupons / PromotionActivity -->
     <string name="coupons">Coupons</string>
+    <string name="no_promotion">There is no promotion at this moment. Please come back after a short while.</string>
 
     <string name="no_internet_connection_error_message">It seems you are not connected to the internet. Please check your connection and try again.</string>
     <string name="no_internet_connection_error_title">No Internet Connection!</string>

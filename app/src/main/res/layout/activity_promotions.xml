@@ -20,4 +20,15 @@
         android:divider="#EDEDED"
         android:dividerHeight="1dp" />
 
+    <TextView
+        style="@style/WrapContent"
+        android:id="@+id/no_promotion"
+        android:text="@string/no_promotion"
+        android:layout_below="@+id/header"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:padding="20dp"
+        android:visibility="gone"/>
+
 </RelativeLayout>
